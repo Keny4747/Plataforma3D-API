@@ -1,6 +1,7 @@
 package com.plataforma3d.plataforma3D2024.service.impl;
 
 import com.plataforma3d.plataforma3D2024.dto.EstudianteDTO;
+import com.plataforma3d.plataforma3D2024.exceptions.ModeloNotFoundException;
 import com.plataforma3d.plataforma3D2024.model.Estudiante;
 import com.plataforma3d.plataforma3D2024.repository.EstudianteRepo;
 import com.plataforma3d.plataforma3D2024.service.IEstudianteService;
@@ -56,7 +57,6 @@ public class EstudianteImpl implements IEstudianteService {
         Estudiante estudiante = estudianteRepo
             .findById(id)
             .orElseThrow(EntityExistsException::new);
-
         mapper.map(estudianteDTO, estudiante);
         estudianteRepo.save(estudiante);
 

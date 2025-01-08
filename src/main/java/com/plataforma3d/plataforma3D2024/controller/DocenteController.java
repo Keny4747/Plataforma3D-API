@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import java.util.List;
 
 @RestController
@@ -19,8 +20,8 @@ public class DocenteController {
     }
 
     @GetMapping("/list")
-    public List<DocenteDTO> docente() throws Exception {
-        return docenteService.readAll();
+    public ResponseEntity<List<DocenteDTO>> docente() throws Exception {
+        return new ResponseEntity<>( docenteService.readAll(), HttpStatus.OK);
     }
 
     @PostMapping("/new")
@@ -29,18 +30,23 @@ public class DocenteController {
     }
 
     @GetMapping("/{id}")
-    public DocenteDTO getDocenteById(@PathVariable Integer id) throws Exception {
-        return docenteService.findById(id);
+    public ResponseEntity<DocenteDTO> getDocenteById(@PathVariable Integer id) throws Exception {
+        DocenteDTO docenteDTO = docenteService.findById(id);
+        if (docenteDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(docenteService.findById(id), HttpStatus.OK) ;
     }
 
     @PutMapping("/{id}")
-    public DocenteDTO updateDocente(@PathVariable Integer id, @RequestBody DocenteDTO docenteDto) throws Exception {
-        return docenteService.update(id, docenteDto);
+    public ResponseEntity<DocenteDTO> updateDocente(@PathVariable Integer id, @RequestBody DocenteDTO docenteDto) throws Exception {
+        return new ResponseEntity<>(docenteService.update(id, docenteDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDocente(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<Void> deleteDocente(@PathVariable Integer id) throws Exception {
         docenteService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

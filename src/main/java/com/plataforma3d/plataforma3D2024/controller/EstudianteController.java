@@ -2,8 +2,12 @@ package com.plataforma3d.plataforma3D2024.controller;
 
 import com.plataforma3d.plataforma3D2024.dto.DocenteDTO;
 import com.plataforma3d.plataforma3D2024.dto.EstudianteDTO;
+import com.plataforma3d.plataforma3D2024.exceptions.ModeloNotFoundException;
 import com.plataforma3d.plataforma3D2024.service.IDocenteService;
 import com.plataforma3d.plataforma3D2024.service.IEstudianteService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,28 +22,34 @@ public class EstudianteController {
     }
 
     @GetMapping("/list")
-    public List<EstudianteDTO> docente() throws Exception {
-        return estudianteService.readAll();
+    public ResponseEntity<List<EstudianteDTO>> docente() throws Exception {
+        return new ResponseEntity<>(estudianteService.readAll(), HttpStatus.OK);
     }
 
     @PostMapping("/new")
-    public EstudianteDTO createDocente(@RequestBody EstudianteDTO estudianteDTO) throws Exception {
-        return estudianteService.save(estudianteDTO);
+    public ResponseEntity<EstudianteDTO> createDocente(@Valid @RequestBody EstudianteDTO estudianteDTO) throws Exception {
+        return new ResponseEntity<>(estudianteService.save(estudianteDTO), HttpStatus.CREATED) ;
     }
 
     @GetMapping("/{id}")
-    public EstudianteDTO getDocenteById(@PathVariable Integer id) throws Exception {
-        return estudianteService.findById(id);
+    public ResponseEntity<EstudianteDTO>  getDocenteById(@PathVariable Integer id) throws Exception {
+
+        EstudianteDTO estudianteDTO = estudianteService.findById(id);
+        if (estudianteDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(estudianteDTO, HttpStatus.OK) ;
     }
 
     @PutMapping("/{id}")
-    public EstudianteDTO updateDocente(@PathVariable Integer id, @RequestBody EstudianteDTO estudianteDTO) throws Exception {
-        return estudianteService.update(id, estudianteDTO);
+    public ResponseEntity<EstudianteDTO> updateDocente(@PathVariable Integer id, @RequestBody EstudianteDTO estudianteDTO) throws Exception {
+        return new ResponseEntity<>(estudianteService.update(id, estudianteDTO), HttpStatus.OK) ;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDocente(@PathVariable Integer id) throws Exception {
-        estudianteService.delete(id);
+    public ResponseEntity<Void>  deleteDocente(@PathVariable Integer id) throws Exception {
+         estudianteService.delete(id);
+         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

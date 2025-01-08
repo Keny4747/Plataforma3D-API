@@ -1,30 +1,27 @@
 package com.plataforma3d.plataforma3D2024.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
 public class DocenteDTO {
 
-    @NotNull(message = "El nombre no puede ser nulo")
-    @NotEmpty
-    @Size(min = 2)
+    @NotBlank(message = "El nombre del docente no puede estar en blanco")
+    @Size(min = 2, message = "El nombre del docente debe tener al menos 2 caracteres")
     private String nombre;
 
-    @NotNull(message = "El Apellido no puede ser nulo")
-    @NotEmpty
-    @Size(min = 3)
+    @NotBlank(message = "El Apellido del docente no puede estar en blanco")
+    @Size(min = 3, message = "El apellido del docente debe tener al menos 3 caracteres")
     private String apellido;
 
     @Email
     private String email;
 
     private String password;
-
+    @NotBlank(message = "El telefono es obligatorio")
     private String telefono;
+
+    @NotBlank(message = "El DNI es obligatorio")
     private String dni;
     private String especialidad;
 }
