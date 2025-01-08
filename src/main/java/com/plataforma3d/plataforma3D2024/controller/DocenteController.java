@@ -2,6 +2,9 @@ package com.plataforma3d.plataforma3D2024.controller;
 
 import com.plataforma3d.plataforma3D2024.dto.DocenteDTO;
 import com.plataforma3d.plataforma3D2024.service.IDocenteService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +24,8 @@ public class DocenteController {
     }
 
     @PostMapping("/new")
-    public DocenteDTO createDocente(@RequestBody DocenteDTO docenteDto) throws Exception {
-        return docenteService.save(docenteDto);
+    public ResponseEntity<DocenteDTO> createDocente(@Valid @RequestBody DocenteDTO docenteDto) throws Exception {
+        return new ResponseEntity<>(docenteService.save(docenteDto), HttpStatus.CREATED) ;
     }
 
     @GetMapping("/{id}")
