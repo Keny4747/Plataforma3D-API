@@ -7,6 +7,7 @@ import com.plataforma3d.plataforma3D2024.repository.EstudianteRepo;
 import com.plataforma3d.plataforma3D2024.service.IEstudianteService;
 import jakarta.persistence.EntityExistsException;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,18 +19,21 @@ public class EstudianteImpl implements IEstudianteService {
 
     private final EstudianteRepo estudianteRepo;
     private final ModelMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public EstudianteImpl(EstudianteRepo estudianteRepo, ModelMapper mapper) {
+
+    public EstudianteImpl(EstudianteRepo estudianteRepo, ModelMapper mapper, PasswordEncoder passwordEncoder) {
         this.estudianteRepo = estudianteRepo;
         this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public EstudianteDTO save(EstudianteDTO estudianteDTO) throws Exception {
 
         Estudiante estudiante = mapper.map(estudianteDTO, Estudiante.class);
+        estudiante.setPassword(passwordEncoder.encode(estudiante.getPassword()));
         estudianteRepo.save(estudiante);
-
         return estudianteDTO;
     }
 

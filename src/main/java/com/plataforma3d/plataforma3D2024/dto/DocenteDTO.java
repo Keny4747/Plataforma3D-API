@@ -17,6 +17,7 @@ public class DocenteDTO {
     @Email
     private String email;
 
+
     private String password;
     @NotBlank(message = "El telefono es obligatorio")
     private String telefono;

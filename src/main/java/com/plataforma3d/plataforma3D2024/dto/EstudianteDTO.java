@@ -17,6 +17,11 @@ public class EstudianteDTO {
 
     @Email
     private String email;
+
+    private String username;
+
+
+
     private String password;
 
     @NotBlank(message = "El telefono es obligatorio")
@@ -24,4 +29,6 @@ public class EstudianteDTO {
 
     @NotBlank(message = "El DNI es obligatorio")
     private String dni;
+
+    private String role_name;
 }

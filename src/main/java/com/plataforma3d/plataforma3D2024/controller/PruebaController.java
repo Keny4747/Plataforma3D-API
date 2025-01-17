@@ -3,6 +3,7 @@ package com.plataforma3d.plataforma3D2024.controller;
 import com.plataforma3d.plataforma3D2024.model.Prueba;
 import com.plataforma3d.plataforma3D2024.repository.PruebaRepo;
 import com.plataforma3d.plataforma3D2024.service.PruebaService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
