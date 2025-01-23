@@ -36,15 +36,13 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(htpp -> {
-                    //primero se configura los endpoint publicos
-
+                    htpp.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll(); // Añade esta línea
                     //luego se configura los endpoint privados
                     htpp.requestMatchers(HttpMethod.POST,"/estudiante/new").hasRole("ADMIN");
-                    htpp.requestMatchers(HttpMethod.GET,"/estudiante/list").hasRole("ADMIN");
                     htpp.requestMatchers(HttpMethod.PUT,"/estudiante/{id}").hasRole("ADMIN");
                     htpp.requestMatchers(HttpMethod.DELETE,"/estudiante/{id}").hasRole("ADMIN");
-                    htpp.requestMatchers(HttpMethod.GET, "/prueba/list").hasRole("USER");
-                    //por ultimo se configura el resto de los endpoint
+                    htpp.requestMatchers(HttpMethod.GET,"/estudiante/list").hasRole("ADMIN");
+                    htpp.requestMatchers(HttpMethod.GET, "/prueba/list").permitAll();
                     htpp.anyRequest().authenticated();
                 })
                 .build();
@@ -68,4 +66,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
