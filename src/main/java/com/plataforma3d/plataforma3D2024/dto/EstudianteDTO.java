@@ -1,7 +1,9 @@
 package com.plataforma3d.plataforma3D2024.dto;
 
+import com.plataforma3d.plataforma3D2024.model.utilitario.RoleEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -30,5 +32,6 @@ public class EstudianteDTO {
     @NotBlank(message = "El DNI es obligatorio")
     private String dni;
 
-    private String role_name;
+    @NotNull(message = "El rol del usuario es obligatorio: ADMIN, USER")
+    private RoleEnum role;
 }
