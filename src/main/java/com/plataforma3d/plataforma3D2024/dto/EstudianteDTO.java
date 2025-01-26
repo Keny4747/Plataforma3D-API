@@ -22,8 +22,6 @@ public class EstudianteDTO {
 
     private String username;
 
-
-
     private String password;
 
     @NotBlank(message = "El telefono es obligatorio")

@@ -7,6 +7,8 @@ import com.plataforma3d.plataforma3D2024.repository.EstudianteRepo;
 import com.plataforma3d.plataforma3D2024.service.IEstudianteService;
 import jakarta.persistence.EntityExistsException;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -66,4 +68,11 @@ public class EstudianteImpl implements IEstudianteService {
 
         return  estudianteDTO;
     }
+
+    @Override
+    public Page<EstudianteDTO> paginate(Pageable pageable) {
+        return estudianteRepo.findAll(pageable).map(estudiante -> mapper.map(estudiante, EstudianteDTO.class));
+    }
+
+
 }

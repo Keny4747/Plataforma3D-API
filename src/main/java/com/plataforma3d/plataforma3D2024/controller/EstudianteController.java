@@ -6,6 +6,10 @@ import com.plataforma3d.plataforma3D2024.exceptions.ModeloNotFoundException;
 import com.plataforma3d.plataforma3D2024.service.IDocenteService;
 import com.plataforma3d.plataforma3D2024.service.IEstudianteService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +56,10 @@ public class EstudianteController {
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //lista paginada
+    @GetMapping("/lista")
+    public Page<EstudianteDTO> paginate(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 5) Pageable pageable) {
+        return estudianteService.paginate(pageable);
+    }
 
 }

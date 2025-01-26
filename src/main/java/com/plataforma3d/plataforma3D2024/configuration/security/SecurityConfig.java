@@ -42,6 +42,7 @@ public class SecurityConfig {
                     htpp.requestMatchers(HttpMethod.PUT,"/estudiante/{id}").hasRole("ADMIN");
                     htpp.requestMatchers(HttpMethod.DELETE,"/estudiante/{id}").hasRole("ADMIN");
                     htpp.requestMatchers(HttpMethod.GET,"/estudiante/list").hasRole("ADMIN");
+                    htpp.requestMatchers(HttpMethod.GET,"/estudiante/lista").hasRole("ADMIN");
                     htpp.requestMatchers(HttpMethod.GET, "/prueba/list").permitAll();
                     htpp.anyRequest().authenticated();
                 })
