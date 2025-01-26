@@ -9,6 +9,9 @@ import lombok.Data;
 
 @Data
 public class EstudianteDTO {
+
+    private Integer id;
+
     @NotBlank(message = "El nombre del estudiante no puede estar en blanco")
     @Size(min = 2, message = "El nombre del estudiante debe tener al menos 2 caracteres")
     private String nombre;
@@ -32,4 +35,6 @@ public class EstudianteDTO {
 
     @NotNull(message = "El rol del usuario es obligatorio: ADMIN, USER")
     private RoleEnum role;
+
+
 }
