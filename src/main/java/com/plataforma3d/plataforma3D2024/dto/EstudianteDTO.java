@@ -1,6 +1,8 @@
 package com.plataforma3d.plataforma3D2024.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.plataforma3d.plataforma3D2024.model.utilitario.RoleEnum;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +12,7 @@ import lombok.Data;
 @Data
 public class EstudianteDTO {
 
+    @Nullable
     private Integer id;
 
     @NotBlank(message = "El nombre del estudiante no puede estar en blanco")

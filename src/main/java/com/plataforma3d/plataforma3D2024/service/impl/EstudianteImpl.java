@@ -6,6 +6,7 @@ import com.plataforma3d.plataforma3D2024.model.Estudiante;
 import com.plataforma3d.plataforma3D2024.repository.EstudianteRepo;
 import com.plataforma3d.plataforma3D2024.service.IEstudianteService;
 import jakarta.persistence.EntityExistsException;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,10 +64,18 @@ public class EstudianteImpl implements IEstudianteService {
         Estudiante estudiante = estudianteRepo
             .findById(id)
             .orElseThrow(EntityExistsException::new);
+
+
+
+        // Configurar ModelMapper para ignorar el campo 'id'
+        mapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        mapper.typeMap(EstudianteDTO.class, Estudiante.class)
+                .addMappings(mapper -> mapper.skip(Estudiante::setId));
+
         mapper.map(estudianteDTO, estudiante);
         estudianteRepo.save(estudiante);
 
-        return  estudianteDTO;
+        return estudianteDTO;
     }
 
     @Override
