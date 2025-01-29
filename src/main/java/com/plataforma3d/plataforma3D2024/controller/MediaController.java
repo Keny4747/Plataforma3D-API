@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,11 +22,14 @@ public class MediaController {
     }
 
     @PostMapping("/upload")
-    public Map<String, String> upload(@RequestParam("file") MultipartFile file) {
-        String filename = storageService.store(file);
-        return Map.of("filename", filename);
+    public Map<String, List<String>> upload(@RequestParam("files") List<MultipartFile> files) {
+        List<String> filenames = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String filename = storageService.store(file);
+            filenames.add(filename);
+        }
+        return Map.of("filenames", filenames);
     }
-
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> download(@PathVariable String filename) {
         Resource resource = storageService.loadAsResource(filename);

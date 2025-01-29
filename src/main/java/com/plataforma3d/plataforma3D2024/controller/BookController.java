@@ -2,7 +2,6 @@ package com.plataforma3d.plataforma3D2024.controller;
 
 import com.plataforma3d.plataforma3D2024.model.Book;
 import com.plataforma3d.plataforma3D2024.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

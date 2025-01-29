@@ -44,6 +44,7 @@ public class SecurityConfig {
                     htpp.requestMatchers(HttpMethod.GET,"/estudiante/list").hasRole("ADMIN");
                     htpp.requestMatchers(HttpMethod.GET,"/estudiante/lista").hasRole("ADMIN");
                     htpp.requestMatchers(HttpMethod.GET, "/prueba/list").permitAll();
+                    htpp.requestMatchers(HttpMethod.POST, "/api/media/upload").hasRole("ADMIN");
                     htpp.anyRequest().authenticated();
                 })
                 .build();
