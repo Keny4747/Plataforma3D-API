@@ -1,5 +1,6 @@
 package com.plataforma3d.plataforma3D2024.configuration.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -47,9 +48,16 @@ public class SecurityConfig {
                     htpp.requestMatchers(HttpMethod.POST, "/api/media/upload").hasRole("ADMIN");
                     htpp.anyRequest().authenticated();
                 })
+                .logout(logout -> logout
+                        .logoutUrl("/logout") // Endpoint para logout
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        })
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
                 .build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
