@@ -1,5 +1,6 @@
 package com.plataforma3d.plataforma3D2024.dto;
 
+import com.plataforma3d.plataforma3D2024.model.utilitario.RoleEnum;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -17,7 +18,7 @@ public class DocenteDTO {
     @Email
     private String email;
 
-
+    private String username;
     private String password;
     @NotBlank(message = "El telefono es obligatorio")
     private String telefono;
@@ -25,4 +26,6 @@ public class DocenteDTO {
     @NotBlank(message = "El DNI es obligatorio")
     private String dni;
     private String especialidad;
+
+    private RoleEnum role;
 }

@@ -33,26 +33,28 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> login(Authentication authentication) {
         String username = authentication.getName();
         String fullName = null;
-
+        String id = null;
         // Verificar si el usuario es un estudiante
         Optional<Estudiante> estudiante = estudianteRepo.findByUsername(username);
         if (estudiante.isPresent()) {
-            fullName = estudiante.get().getNombre() + " " + estudiante.get().getApellido(); // Obtener nombre completo del estudiante
+            fullName = estudiante.get().getNombre() + " " + estudiante.get().getApellido();
+            id = estudiante.get().getId().toString();
         } else {
-            // Verificar si el usuario es un docente
             Optional<Docente> docente = docenteRepo.findByUsername(username);
             if (docente.isPresent()) {
-                fullName = docente.get().getNombre() + " " + docente.get().getApellido(); // Obtener nombre completo del docente
+                fullName = docente.get().getNombre() + " " + docente.get().getApellido();
+                id = docente.get().getId().toString();
             }
         }
 
 
-        log.info("Nombre completo: " + fullName);
+
         Map<String, String> response = new HashMap<>();
         response.put("username", username);
         response.put("message", "Login successful");
         if (fullName != null) {
             response.put("fullName", fullName);
+            response.put("id", id);
         }
 
         return ResponseEntity.ok(response);
