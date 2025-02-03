@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(htpp -> {
-                    htpp.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll(); // Añade esta línea
+                    htpp.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     //luego se configura los endpoint privados
                     htpp.requestMatchers(HttpMethod.POST,"/estudiante/new").hasRole("ADMIN");
                     htpp.requestMatchers(HttpMethod.PUT,"/estudiante/{id}").hasRole("ADMIN");
@@ -49,7 +49,7 @@ public class SecurityConfig {
                     htpp.anyRequest().authenticated();
                 })
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // Endpoint para logout
+                        .logoutUrl("/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);
                         })
