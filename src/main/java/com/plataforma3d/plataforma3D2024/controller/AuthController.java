@@ -34,16 +34,19 @@ public class AuthController {
         String username = authentication.getName();
         String fullName = null;
         String id = null;
+        String role = null;
         // Verificar si el usuario es un estudiante
         Optional<Estudiante> estudiante = estudianteRepo.findByUsername(username);
         if (estudiante.isPresent()) {
             fullName = estudiante.get().getNombre() + " " + estudiante.get().getApellido();
             id = estudiante.get().getId().toString();
+            role = estudiante.get().getRole().toString();
         } else {
             Optional<Docente> docente = docenteRepo.findByUsername(username);
             if (docente.isPresent()) {
                 fullName = docente.get().getNombre() + " " + docente.get().getApellido();
                 id = docente.get().getId().toString();
+                role = docente.get().getRole().toString();
             }
         }
 
@@ -55,6 +58,7 @@ public class AuthController {
         if (fullName != null) {
             response.put("fullName", fullName);
             response.put("id", id);
+            response.put("role", role);
         }
 
         return ResponseEntity.ok(response);
