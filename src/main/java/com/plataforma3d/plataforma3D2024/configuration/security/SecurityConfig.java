@@ -36,17 +36,20 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(htpp -> {
-                    htpp.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    //luego se configura los endpoint privados
-                    htpp.requestMatchers(HttpMethod.POST,"/estudiante/new").hasRole("ADMIN");
-                    htpp.requestMatchers(HttpMethod.PUT,"/estudiante/{id}").hasRole("ADMIN");
-                    htpp.requestMatchers(HttpMethod.DELETE,"/estudiante/{id}").hasRole("ADMIN");
-                    htpp.requestMatchers(HttpMethod.GET,"/estudiante/list").hasRole("ADMIN");
-                    htpp.requestMatchers(HttpMethod.GET,"/estudiante/lista").hasRole("ADMIN");
-                    htpp.requestMatchers(HttpMethod.GET, "/prueba/list").permitAll();
-                    htpp.requestMatchers(HttpMethod.POST, "/api/media/upload").hasRole("ADMIN");
-                    htpp.anyRequest().authenticated();
+                .authorizeHttpRequests(http -> {
+                    http.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    //endpoints del docente
+                    http.requestMatchers(HttpMethod.POST,"/estudiante/new").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.PUT,"/estudiante/{id}").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.DELETE,"/estudiante/{id}").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.GET,"/estudiante/list").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.POST, "/api/media/upload").hasRole("ADMIN");
+
+                    //endpoints del estudiante
+                    http.requestMatchers(HttpMethod.GET, "/api/books").hasAnyRole("ADMIN", "USER");
+                    http.requestMatchers(HttpMethod.GET, "/api/media/**").hasAnyRole("ADMIN", "USER");
+
+                    http.anyRequest().authenticated();
                 })
                 .logout(logout -> logout
                         .logoutUrl("/logout")
