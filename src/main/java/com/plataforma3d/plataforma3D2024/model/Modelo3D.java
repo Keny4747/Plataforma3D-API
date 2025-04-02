@@ -21,8 +21,8 @@ public class Modelo3D {
     private Boolean esExterno;
     private String embedCode;
     private String descripcion;
-    @Enumerated(EnumType.STRING)
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "unidad_aprendizaje")
     private UnidadAprendizaje unidadAprendizaje;
 

@@ -22,7 +22,6 @@ public class Modelo3dController {
     public Optional<Modelo3D> buscarPorNombre(@PathVariable String nombre) {
         return modelo3DService.obtenerPorNombre(nombre);
     }
-    // 🔹 Subir un nuevo modelo (solo guarda en BD, sin S3 por ahora)
     @PostMapping
     public Modelo3D subirModelo(@RequestBody Modelo3D modelo) {
         return modelo3DService.guardarModelo(modelo);
