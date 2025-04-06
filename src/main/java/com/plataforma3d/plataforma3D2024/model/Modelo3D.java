@@ -15,12 +15,12 @@ public class Modelo3D {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String nombre;
     private String url;
     private Boolean esExterno;
     private String embedCode;
     private String descripcion;
+    private String coverPath;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "unidad_aprendizaje")

@@ -39,17 +39,25 @@ public class Modelo3DService {
         Optional<Modelo3D> modelo = modelo3DRepository.findById(id);
 
         if (modelo.isPresent()) {
+            Modelo3D model = modelo.get();
 
-            if(modelo.get().getUrl() != null ){
-                s3Service.deleteFile(modelo.get().getUrl());
+            // Eliminar el archivo del modelo (si aplica)
+            if (model.getUrl() != null) {
+                s3Service.deleteFile(model.getUrl());
             }
 
-            // MYSQL
+            // Eliminar la imagen de portada (si aplica)
+            if (model.getCoverPath() != null) {
+                s3Service.deleteFile(model.getCoverPath());
+            }
+
+            // Borrar de la base de datos
             modelo3DRepository.deleteById(id);
         } else {
             throw new RuntimeException("Modelo no encontrado");
         }
     }
+
 
     public Modelo3D actualizarModelo(Modelo3D modelo) {
         return modelo3DRepository.save(modelo);

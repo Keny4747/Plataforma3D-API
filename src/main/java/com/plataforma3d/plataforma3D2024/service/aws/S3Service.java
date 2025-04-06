@@ -24,22 +24,24 @@ public class S3Service {
         this.s3Client = s3Client;
     }
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String tipo) {
         try {
-            String fileName = "modelos3D/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+            String folder = tipo.equalsIgnoreCase("imagen") ? "imagenes" : "modelos3D";
+            String fileName = folder + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
 
             s3Client.putObject(PutObjectRequest.builder()
                             .bucket(bucketName)
                             .key(fileName)
                             .acl("public-read")
                             .build(),
-                    RequestBody.fromBytes(file.getBytes()));  // Usar bytes en lugar de Paths
+                    RequestBody.fromBytes(file.getBytes()));
 
             return endpoint + "/" + bucketName + "/" + fileName;
         } catch (Exception e) {
             throw new RuntimeException("Error al subir archivo a DigitalOcean Spaces", e);
         }
     }
+
 
     public void deleteFile(String fileUrl) {
         try {
