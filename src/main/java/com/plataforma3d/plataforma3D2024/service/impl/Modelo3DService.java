@@ -59,8 +59,22 @@ public class Modelo3DService {
     }
 
 
-    public Modelo3D actualizarModelo(Modelo3D modelo) {
-        return modelo3DRepository.save(modelo);
+    public Modelo3D actualizarModelo(Modelo3D modeloNuevo) {
+        Modelo3D modeloActual = modelo3DRepository.findById(modeloNuevo.getId())
+                .orElseThrow(() -> new RuntimeException("Modelo no encontrado"));
+
+        // Si hay una nueva portada, elimina la anterior
+        if (!modeloNuevo.getCoverPath().equals(modeloActual.getCoverPath())) {
+            s3Service.deleteFiles(modeloActual.getCoverPath());
+        }
+
+        // Si hay nuevo archivo de modelo (para modelos locales)
+        if (!modeloNuevo.getEsExterno() && modeloNuevo.getUrl() != null
+                && !modeloNuevo.getUrl().equals(modeloActual.getUrl())) {
+            s3Service.deleteFiles(modeloActual.getUrl());
+        }
+
+        return modelo3DRepository.save(modeloNuevo);
     }
 
 }
