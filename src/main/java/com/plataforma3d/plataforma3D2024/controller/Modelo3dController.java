@@ -31,4 +31,13 @@ public class Modelo3dController {
     public Optional<Modelo3D> buscarPorId(@PathVariable Integer id) {
         return modelo3DService.obtenerPorId(id);
     }
+
+    @DeleteMapping("/{id}")
+    public void eliminarModelo(@PathVariable Integer id) {
+        modelo3DService.eliminarModelo(id);
+    }
+    @PutMapping
+    public Modelo3D actualizarModelo(@RequestBody Modelo3D modelo) {
+        return modelo3DService.actualizarModelo(modelo);
+    }
 }

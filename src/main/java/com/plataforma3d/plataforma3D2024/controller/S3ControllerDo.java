@@ -1,14 +1,14 @@
 package com.plataforma3d.plataforma3D2024.controller;
 
 import com.plataforma3d.plataforma3D2024.service.aws.S3Service;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,10 +22,16 @@ public class S3ControllerDo {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileUrl = s3Service.uploadFile(file);
-        Map<String, String> response = new HashMap<>();
-        response.put("url", fileUrl);
-        return ResponseEntity.ok(response);
+    public Map<String, List<String>> upload(
+            @RequestParam("files") List<MultipartFile> files,
+            @RequestParam(value = "tipo", required = false, defaultValue = "modelos3D") String tipo) {
+
+        List<String> urls = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String url = s3Service.uploadFile(file, tipo);
+            urls.add(url);
+        }
+        return Map.of("filenames", urls);
     }
+
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.util.UUID;
@@ -23,16 +24,17 @@ public class S3Service {
         this.s3Client = s3Client;
     }
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String tipo) {
         try {
-            String fileName = "modelos3D/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+            String folder = tipo.equalsIgnoreCase("imagen") ? "imagenes" : "modelos3D";
+            String fileName = folder + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
 
             s3Client.putObject(PutObjectRequest.builder()
                             .bucket(bucketName)
                             .key(fileName)
                             .acl("public-read")
                             .build(),
-                    RequestBody.fromBytes(file.getBytes()));  // Usar bytes en lugar de Paths
+                    RequestBody.fromBytes(file.getBytes()));
 
             return endpoint + "/" + bucketName + "/" + fileName;
         } catch (Exception e) {
@@ -40,4 +42,18 @@ public class S3Service {
         }
     }
 
+
+    public void deleteFile(String fileUrl) {
+        try {
+            String fileName = fileUrl.replace(endpoint + "/" + bucketName + "/", "");
+
+            s3Client.deleteObject(DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(fileName)
+                    .build());
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar archivo en DigitalOcean Spaces", e);
+        }
+    }
 }
