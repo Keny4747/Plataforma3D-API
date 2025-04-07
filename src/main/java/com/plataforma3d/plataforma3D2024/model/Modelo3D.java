@@ -18,6 +18,7 @@ public class Modelo3D {
     private String nombre;
     private String url;
     private Boolean esExterno;
+
     private String embedCode;
     private String descripcion;
     private String coverPath;

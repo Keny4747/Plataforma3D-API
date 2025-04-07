@@ -2,7 +2,6 @@ package com.plataforma3d.plataforma3D2024.controller;
 
 import com.plataforma3d.plataforma3D2024.model.Modelo3D;
 import com.plataforma3d.plataforma3D2024.service.impl.Modelo3DService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,8 +10,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/modelos")
 public class Modelo3dController {
-    @Autowired
-    private Modelo3DService modelo3DService;
+    private final Modelo3DService modelo3DService;
+
+    public Modelo3dController(Modelo3DService modelo3DService) {
+        this.modelo3DService = modelo3DService;
+    }
 
     @GetMapping
     public List<Modelo3D> listarModelos() {
@@ -36,8 +38,10 @@ public class Modelo3dController {
     public void eliminarModelo(@PathVariable Integer id) {
         modelo3DService.eliminarModelo(id);
     }
-    @PutMapping
-    public Modelo3D actualizarModelo(@RequestBody Modelo3D modelo) {
+    @PutMapping("/{id}")
+    public Modelo3D actualizarModelo(@PathVariable Integer id, @RequestBody Modelo3D modelo) {
+        modelo.setId(id);
         return modelo3DService.actualizarModelo(modelo);
     }
+
 }

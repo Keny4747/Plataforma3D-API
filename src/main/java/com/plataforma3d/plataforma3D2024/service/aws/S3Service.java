@@ -56,4 +56,20 @@ public class S3Service {
             throw new RuntimeException("Error al eliminar archivo en DigitalOcean Spaces", e);
         }
     }
+
+    //este metodo elimina los archivos al actualizar
+    public void deleteFiles(String fileUrl) {
+        try {
+            String key = fileUrl.replace(endpoint + "/" + bucketName + "/", "");
+
+            s3Client.deleteObject(DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build());
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar archivo de DigitalOcean Spaces", e);
+        }
+    }
+
+
 }
