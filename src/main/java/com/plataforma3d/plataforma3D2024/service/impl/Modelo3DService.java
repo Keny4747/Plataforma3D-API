@@ -59,22 +59,33 @@ public class Modelo3DService {
     }
 
 
-    public Modelo3D actualizarModelo(Modelo3D modeloNuevo) {
-        Modelo3D modeloActual = modelo3DRepository.findById(modeloNuevo.getId())
+    public Modelo3D actualizarModelo(Modelo3D nuevoModelo) {
+        Modelo3D existente = modelo3DRepository.findById(nuevoModelo.getId())
                 .orElseThrow(() -> new RuntimeException("Modelo no encontrado"));
 
-        // Si hay una nueva portada, elimina la anterior
-        if (!modeloNuevo.getCoverPath().equals(modeloActual.getCoverPath())) {
-            s3Service.deleteFiles(modeloActual.getCoverPath());
+        existente.setNombre(nuevoModelo.getNombre());
+        existente.setDescripcion(nuevoModelo.getDescripcion());
+        existente.setUnidadAprendizaje(nuevoModelo.getUnidadAprendizaje());
+        existente.setEsExterno(nuevoModelo.getEsExterno());
+        existente.setEmbedCode(nuevoModelo.getEmbedCode());
+
+        // Validar cambio de archivo solo si hay uno nuevo
+        if (nuevoModelo.getUrl() != null && !nuevoModelo.getUrl().equals(existente.getUrl())) {
+            if (existente.getUrl() != null) {
+                s3Service.deleteFiles(existente.getUrl());
+            }
+            existente.setUrl(nuevoModelo.getUrl());
         }
 
-        // Si hay nuevo archivo de modelo (para modelos locales)
-        if (!modeloNuevo.getEsExterno() && modeloNuevo.getUrl() != null
-                && !modeloNuevo.getUrl().equals(modeloActual.getUrl())) {
-            s3Service.deleteFiles(modeloActual.getUrl());
+        if (nuevoModelo.getCoverPath() != null && !nuevoModelo.getCoverPath().equals(existente.getCoverPath())) {
+            if (existente.getCoverPath() != null) {
+                s3Service.deleteFiles(existente.getCoverPath());
+            }
+            existente.setCoverPath(nuevoModelo.getCoverPath());
         }
 
-        return modelo3DRepository.save(modeloNuevo);
+        return modelo3DRepository.save(existente);
     }
+
 
 }

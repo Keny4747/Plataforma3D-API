@@ -39,7 +39,9 @@ public class Modelo3dController {
         modelo3DService.eliminarModelo(id);
     }
     @PutMapping("/{id}")
-    public Modelo3D actualizarModelo(@RequestBody Modelo3D modelo) {
+    public Modelo3D actualizarModelo(@PathVariable Integer id, @RequestBody Modelo3D modelo) {
+        modelo.setId(id);
         return modelo3DService.actualizarModelo(modelo);
     }
+
 }
