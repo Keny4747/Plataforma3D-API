@@ -38,16 +38,21 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/send/webhook").permitAll();
                     //endpoints del docente
+                    http.requestMatchers(HttpMethod.GET, "/api/books").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.POST,"/estudiante/new").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.PUT,"/estudiante/{id}").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.DELETE,"/estudiante/{id}").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.GET,"/estudiante/list").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.POST, "/api/media/upload").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.POST, "/api/send").hasRole("ADMIN");
+
 
                     //endpoints del estudiante
-                    http.requestMatchers(HttpMethod.GET, "/api/books").hasAnyRole("ADMIN", "USER");
+                    http.requestMatchers(HttpMethod.GET, "/api/books/").hasRole("USER");
                     http.requestMatchers(HttpMethod.GET, "/api/media/**").hasAnyRole("ADMIN", "USER");
+
 
                     http.anyRequest().authenticated();
                 })
