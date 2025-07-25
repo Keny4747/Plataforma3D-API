@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/api/send")
 public class TrellisController {
 
-    private final String TRELLIS_ENDPOINT = "https://bz45225etuisel-5000.proxy.runpod.net/process";
+    private final String TRELLIS_ENDPOINT = "https://wcriagdno28gu2-5000.proxy.runpod.net/process";
     private ModeloGeneradoDTO modeloGenerado;
 
     private final Map<String, ModeloGeneradoDTO> modelosGenerados = new ConcurrentHashMap<>();
